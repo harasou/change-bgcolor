@@ -21,28 +21,21 @@ env_iterm_bgcolor(){
     return 1
 }
 
-# iTerm のカレントセッションID を取得
-get_iterm_sessionid(){
-    cat<<-EOC|/usr/bin/osascript
-    tell application "iTerm"
-      return id of current session of current terminal
-    end tell
-	EOC
-}
 
 # iTerm のバックグラウンドカラー変更処理
 change_iterm_bgcolor(){
 
-    [[ "$1" =~ ^/dev/ttys[0-9]{3} ]] || return 1
-    [[ "$2" =~ {[0-9,\ ]+}        ]] || return 1
+    [[ "$1" =~ {[0-9,\ ]+} ]] || return
+
+    local curr_tty=$(tty)
 
     cat<<-EOC|/usr/bin/osascript
     tell application "iTerm"
       repeat with term in terminals
         repeat with sess in sessions of term
-          if id of sess is "$1" then
+          if tty of sess is "$curr_tty" then
             set prev_color to background color of sess
-            set background color of sess to $2
+            set background color of sess to $1
             return prev_color
           end if
         end repeat

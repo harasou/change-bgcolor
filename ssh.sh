@@ -5,7 +5,7 @@ SCRIPT_DIR=$(cd `dirname $0`;pwd)
 
 cleanup(){
     if [ -n "$prev_bgcolor" ] ; then
-        change_iterm_bgcolor "$curr_tty" "{$prev_bgcolor}" >/dev/null
+        change_iterm_bgcolor "{$prev_bgcolor}" >/dev/null
     fi
 }
 trap cleanup 1 2 3 15
@@ -18,8 +18,7 @@ if is_iterm ; then
     host=${host#*@}
 
     if bgcolor=$(env_iterm_bgcolor $host) ; then
-            curr_tty=$(get_iterm_sessionid)
-        prev_bgcolor=$(change_iterm_bgcolor $curr_tty $bgcolor)
+        prev_bgcolor=$(change_iterm_bgcolor $bgcolor)
     fi
 fi
 

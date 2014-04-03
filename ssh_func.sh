@@ -2,16 +2,7 @@
 
 # iTerm で実行されたコマンドかチェック
 is_iterm(){
-    return $(cat<<-EOC|/usr/bin/osascript
-    tell application "System Events"
-        set front_app to name of (path to frontmost application)
-        if front_app is "iTerm.app" then
-            return 0
-        else
-            return 1
-        end if
-    end tell
-	EOC)
+    env | grep -qw ITERM_SESSION_ID
 }
 
 # 環境変数から引数(ホスト名)に対応するバックグランドカラーを取得

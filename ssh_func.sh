@@ -9,12 +9,15 @@ is_iterm(){
 env_iterm_bgcolor(){
 
     local ENV_PREFIX="ITERM_BGCOLOR_"
-    local host=$1
+    local line host=$1
 
-    while read color regx
+    while read line
     do
-        if [[ $host =~ $regx ]] ; then
-            [[ "$color" =~ {[0-9,\ ]+} ]] && { echo $color ; return 0 ; }
+        if [[ $line =~ ({[0-9 ]+,[0-9 ]+,[0-9 ]+})[[:space:]]+([^[:space:]]+) ]] ; then
+            color=${BASH_REMATCH[1]}
+            regex=${BASH_REMATCH[2]}
+
+            [[ $host =~ $regex ]] && { echo $color ; return 0 ; }
         fi
     done < <(env|grep "^$ENV_PREFIX"|sed -e 's/^[^=]*=//' -e 's/\\/\\\\/g')
 

@@ -18,7 +18,7 @@ if is_iterm ; then
     host=${host#*@}
 
     if bgcolor=$(env_iterm_bgcolor $host) ; then
-        prev_bgcolor=$(change_iterm_bgcolor $bgcolor)
+        prev_bgcolor=$(change_iterm_bgcolor "$bgcolor")
     fi
 fi
 
